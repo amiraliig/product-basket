@@ -1,10 +1,10 @@
 let productData = [
-    { id: 1, title: 'Album 1', price: 12.93, img: 'Images/Album 1.png' },
-    { id: 2, title: 'Album 2', price: 21, img: 'Images/Album 2.png' },
-    { id: 3, title: 'Album 3', price: 33, img: 'Images/Album 3.png' },
-    { id: 4, title: 'Album 4', price: 41.98, img: 'Images/Album 4.png' },
-    { id: 5, title: 'Coffee', price: 98, img: 'Images/Cofee.png' },
-    { id: 6, title: 'Shirt', price: 65.33, img: 'Images/Shirt.png' },
+    { id: 1, title: 'Album 1', price: 12.93, img: 'Images/Album 1.png' ,count:1},
+    { id: 2, title: 'Album 2', price: 21, img: 'Images/Album 2.png' ,count:3},
+    { id: 3, title: 'Album 3', price: 33, img: 'Images/Album 3.png' ,count:1},
+    { id: 4, title: 'Album 4', price: 41.98, img: 'Images/Album 4.png' ,count:1},
+    { id: 5, title: 'Coffee', price: 98, img: 'Images/Cofee.png' ,count:1},
+    { id: 6, title: 'Shirt', price: 65.33, img: 'Images/Shirt.png' ,count:1},
 ]
 let userbasket = []
 console.log(productData)
@@ -38,6 +38,7 @@ addButton.innerHTML = "ADD TO CARD"
 addButton.addEventListener('click',function(){
     addProductToBasket(product.id)
     basketProductGenrator(userbasket)
+    calctotalprice(userbasket)
 })
 detailContainer.append(productPrice,addButton)
 productContainer.append(titleSpan,productImag,detailContainer)
@@ -87,7 +88,10 @@ btnContainer.classList.add('cart-quantity','cart-column')
 let productCount = $.createElement('input')
 productCount.classList.add('cart-quantity-input') 
 productCount.setAttribute('type','number')
-productCount.setAttribute('value','1')
+productCount.setAttribute('value',product.count)
+productCount.addEventListener('change',function(){
+    updateProductConunt(product.id,productCount.value)
+})
 
 let removeBtnBasket = $.createElement('button')
 removeBtnBasket.classList.add('btn','btn-danger')
@@ -112,10 +116,30 @@ return productId == product.id
     })
     userbasket.splice(productDeletedIndex,1)
     basketProductGenrator(userbasket)
+    calctotalprice(userbasket)
 }
 function removeAllPriductHandler(){
     userbasket = []
     basketProductGenrator(userbasket)
+    calctotalprice(userbasket)
 }
 removeAllPruduct.addEventListener('click',removeAllPriductHandler)
+
+function calctotalprice(arr){
+    let sumPrice = 0
+for(let i = 0;i < arr.length ;i++){
+    sumPrice += arr[i].price * (arr[i].count)
+}
+let totalPriceElem = $.querySelector('.cart-total-price')
+totalPriceElem.innerHTML = sumPrice
+
+}
+function updateProductConunt(productId,newcount){
+userbasket.forEach(function(product){
+if(product.id == productId){
+    product.count = newcount
+}
+})
+calctotalprice(userbasket)
+}
 
