@@ -10,6 +10,7 @@ let userbasket = []
 console.log(productData)
 let $ = document
 let productsList = $.querySelector('.shop-items')
+let removeAllPruduct = $.getElementById('remove-all')
 
 productData.forEach(function(product){
 
@@ -41,11 +42,13 @@ addButton.addEventListener('click',function(){
 detailContainer.append(productPrice,addButton)
 productContainer.append(titleSpan,productImag,detailContainer)
 productsList.append(productContainer)
+
 })
 
 
 
 function addProductToBasket(productId){
+    
    let userProduct = productData.find(function(product){
     return product.id == productId
     })
@@ -89,6 +92,10 @@ productCount.setAttribute('value','1')
 let removeBtnBasket = $.createElement('button')
 removeBtnBasket.classList.add('btn','btn-danger')
 removeBtnBasket.innerHTML = 'REMOVE'
+removeBtnBasket.addEventListener('click',function(){
+   deleteBtnBasket(product.id)
+    
+})
 
 btnContainer.append(productCount,removeBtnBasket)
 
@@ -98,3 +105,17 @@ productBasketItems.append(cartRow)
 
 })
 }
+
+function deleteBtnBasket(productId){
+    let productDeletedIndex = userbasket.findIndex(function(product){
+return productId == product.id
+    })
+    userbasket.splice(productDeletedIndex,1)
+    basketProductGenrator(userbasket)
+}
+function removeAllPriductHandler(){
+    userbasket = []
+    basketProductGenrator(userbasket)
+}
+removeAllPruduct.addEventListener('click',removeAllPriductHandler)
+
