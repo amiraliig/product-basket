@@ -36,6 +36,7 @@ addButton.className = "btn btn-primary shop-item-button"
 addButton.innerHTML = "ADD TO CARD"
 addButton.addEventListener('click',function(){
     addProductToBasket(product.id)
+    basketProductGenrator(userbasket)
 })
 detailContainer.append(productPrice,addButton)
 productContainer.append(titleSpan,productImag,detailContainer)
@@ -51,8 +52,10 @@ function addProductToBasket(productId){
    userbasket.push(userProduct)
    console.log(userbasket)
 }
+let productBasketItems = $.querySelector('.cart-items')
 
 function basketProductGenrator(basketArr){
+    productBasketItems.innerHTML = ''
 basketArr.forEach(function(product){
 
 let cartRow = $.createElement('div')
@@ -60,6 +63,38 @@ cartRow.classList.add('cart-row')
 
 let cartItem = $.createElement('div')
 cartItem.classList.add('cart-item','cart-column')
+
+let imageItemUserbasket = $.createElement('img')
+imageItemUserbasket.classList.add('cart-item-image')
+imageItemUserbasket.setAttribute('src',product.img)
+
+let titleItemUserBasket = $.createElement('span')
+titleItemUserBasket.classList.add("cart-item-title")
+titleItemUserBasket.innerHTML = product.title
+
+cartItem.append(imageItemUserbasket,titleItemUserBasket)
+
+let priceuserbasket = $.createElement('span')
+priceuserbasket.classList.add('cart-price','cart-column')
+priceuserbasket.innerHTML = product.price
+
+let btnContainer = $.createElement('div')
+btnContainer.classList.add('cart-quantity','cart-column')
+
+let productCount = $.createElement('input')
+productCount.classList.add('cart-quantity-input') 
+productCount.setAttribute('type','number')
+productCount.setAttribute('value','1')
+
+let removeBtnBasket = $.createElement('button')
+removeBtnBasket.classList.add('btn','btn-danger')
+removeBtnBasket.innerHTML = 'REMOVE'
+
+btnContainer.append(productCount,removeBtnBasket)
+
+cartRow.append(cartItem,priceuserbasket,btnContainer)
+
+productBasketItems.append(cartRow)
 
 })
 }
